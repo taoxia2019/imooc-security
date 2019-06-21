@@ -1,17 +1,17 @@
 package com.imooc.web.controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.DTO.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,47 @@ import java.util.List;
  * @Version 1.0
  */
 @RestController
+@RequestMapping("/user")
 public class UserController {
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable String id){
+        System.out.println(id);
+    }
+
+    @PutMapping("/{id}")
+    //@JsonView(User.UserDetailView.class)
+    public User update(@Valid @RequestBody User user,BindingResult errors){
+        if(errors.hasErrors()){
+            errors.getAllErrors().stream().forEach(error -> {
+                //FieldError fieldError= (FieldError) error;
+                //String message=fieldError.getField() +" " +error.getDefaultMessage();
+                System.out.println(error.getDefaultMessage());
+            });
+        }
+        System.out.println(user.getId());
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        System.out.println(user.getBirthday());
+        user.setId("1");
+        return user;
+    }
+
+    @PostMapping
+    //@JsonView(User.UserDetailView.class)
+    public User create(@Valid @RequestBody User user,BindingResult errors){
+        if(errors.hasErrors()){
+            errors.getAllErrors().stream().forEach(error -> System.out.println(error.getDefaultMessage()));
+        }
+        System.out.println(user.getId());
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        System.out.println(user.getBirthday());
+        user.setId("1");
+        return user;
+    }
+
+
     @RequestMapping(value="/user",method = RequestMethod.GET)
     public List<User> query(@RequestParam(name="username") String nickname,@PageableDefault(page = 2,size = 10,sort = "username,asc") Pageable pageable){
         System.out.println(nickname);

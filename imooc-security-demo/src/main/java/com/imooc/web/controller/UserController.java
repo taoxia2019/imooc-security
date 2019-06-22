@@ -80,8 +80,9 @@ public class UserController {
 
     @GetMapping(value="/user/{id}")
     public User getInfo(@PathVariable String id){
-        User user=new User();
-        user.setUsername("tom");
-        return user;
+        throw new RuntimeException("user is not exist");
+        /*User user=new User();
+        user.setUsername("tom");*/
+        //return user;
     }
 }

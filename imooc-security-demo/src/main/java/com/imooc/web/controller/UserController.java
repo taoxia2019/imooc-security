@@ -25,9 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
-    //测试用
-    User user = new User();
+    //测试拉取pull 上传push
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable String id){

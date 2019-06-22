@@ -26,6 +26,9 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    //测试用
+    User user = new User();
+
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable String id){
         System.out.println(id);

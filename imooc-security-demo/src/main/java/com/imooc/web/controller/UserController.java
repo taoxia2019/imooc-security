@@ -3,8 +3,9 @@ package com.imooc.web.controller;
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.DTO.User;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -65,12 +66,12 @@ public class UserController {
     }
 
 
-    @RequestMapping(value="/user",method = RequestMethod.GET)
-    public List<User> query(@RequestParam(name="username") String nickname,@PageableDefault(page = 2,size = 10,sort = "username,asc") Pageable pageable){
+    @RequestMapping(method = RequestMethod.GET)
+    public List<User> query(@RequestParam(name="username") String nickname){
         System.out.println(nickname);
-        System.out.println(pageable.getPageSize());
+        /*System.out.println(pageable.getPageSize());
         System.out.println(pageable.getPageNumber());
-        System.out.println(pageable.getSort());
+        System.out.println(pageable.getSort());*/
         List<User> users=new ArrayList<>();
         users.add(new User());
         users.add(new User());
@@ -78,11 +79,24 @@ public class UserController {
         return users;
     }
 
-    @GetMapping(value="/user/{id}")
-    public User getInfo(@PathVariable String id){
-        throw new RuntimeException("user is not exist");
-        /*User user=new User();
-        user.setUsername("tom");*/
-        //return user;
+    @GetMapping(value="/{id}")
+    @ApiOperation(value="用户查询")
+    public User getInfo(@ApiParam("用户ID") @PathVariable String id){
+        System.out.println("进入filter getinfo服务");
+        User user=new User();
+        user.setUsername("tom123");
+        return user;
     }
+
+
+
+    /*@GetMapping("/{id:\\d+}")
+    @JsonView(User.UserDetailView.class)
+    public User getInfo(@PathVariable String id) {
+//		throw new RuntimeException("user not exist");
+        System.out.println("进入getInfo服务");
+        User user = new User();
+        user.setUsername("tom");
+        return user;
+    }*/
 }
